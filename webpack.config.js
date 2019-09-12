@@ -19,7 +19,7 @@ const entries = getEntries(require('glob').sync(`${pagesDir}**/*.ts`));
 function getEntries(filenames) {
   const entries = {};
 
-  filenames.forEach(filename => entries[path.basename(filename, '.ts')] = filename);
+  filenames.forEach(filename => entries[filename.replace(pagesDir, '').replace(/\.ts$/, '')] = filename);
 
   return entries
 }
@@ -29,7 +29,7 @@ function getEntries(filenames) {
  ********************/
 const output = {
   filename: '[name].[hash].js',
-  path: path.join(__dirname, buildDir)
+  path: path.resolve(__dirname, buildDir)
 };
 
 /********************
@@ -63,11 +63,15 @@ const plugins = [
       ignore: ['*.pug', '*.ts', '*.s[ac]ss']
     }
   ]),
-  ...pages.map(page => new HtmlWebpackPlugin({
-    template: page,
-    filename: `${path.basename(page, '.pug')}.html`,
-    chunks: [path.basename(page, '.pug')]
-  }))
+  ...pages.map(page => {
+    const filename = page.replace(pagesDir, '').replace(/\.pug$/, '');
+
+    return new HtmlWebpackPlugin({
+      filename: `${filename}.html`,
+      template: page,
+      chunks: [filename]
+    });
+  })
 ];
 
 /********************
@@ -141,11 +145,21 @@ function getTypescriptsRules() {
 }
 
 function getStylesRules() {
+  const autoprefixer = require('autoprefixer');
+
   return {
     test: /\.s[ac]ss$/,
     use: [
       MiniCssExtractPlugin.loader,
       'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: [
+            autoprefixer()
+          ]
+        }
+      },
       'sass-loader'
     ],
   };
