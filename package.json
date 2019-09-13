@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "autoprefixer": "^9.6.1",
-    "glob": "^7.1.4"
+    "glob": "^7.1.4",
+    "normalize.css": "^8.0.1"
   }
 }
