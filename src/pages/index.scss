@@ -1,5 +1,41 @@
+@import "../styles/mixins";
+
 body {
   color: blue;
+
+  @include breakpoint(sm) {
+    color: red;
+  }
+
+  @include breakpoint(md) {
+    color: saddlebrown;
+  }
+
+  @include breakpoint(xs) {
+    color: rgb(255, 0, 128);
+  }
+
+  @include breakpoint(lg) {
+    color: rgb(26, 221, 91);
+  }
+}
+
+a {
+  @include breakpoint(md) {
+    color: red;
+  }
+
+  @include breakpoint(sm) {
+    color: saddlebrown;
+  }
+
+  @include breakpoint(lg) {
+    color: rgb(255, 0, 128);
+  }
+
+  @include breakpoint(xs) {
+    color: rgb(26, 221, 91);
+  }
 }
 
 * {

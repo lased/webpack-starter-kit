@@ -1,0 +1,29 @@
+@import "./_variables";
+
+@mixin breakpoint($point) {
+  $p: map-get($breakpoints, $point);
+  $screen: '';
+
+  @each $k,
+  $v in $p {
+    $media: '(#{$k}-width: #{$v})';
+
+    @if($k=='min') {
+      $screen: $media;
+    }
+
+    @if($k=='max') {
+      @if($screen !='') {
+        $screen: $screen+' and (#{$k}-width: #{$v})';
+      }
+
+      @else {
+        $screen: $media;
+      }
+    }
+  }
+
+  @media #{$screen} {
+    @content;
+  }
+}

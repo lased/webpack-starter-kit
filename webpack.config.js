@@ -160,6 +160,7 @@ function getStylesRules() {
           ]
         }
       },
+      "group-css-media-queries-loader",
       'sass-loader'
     ],
   };
