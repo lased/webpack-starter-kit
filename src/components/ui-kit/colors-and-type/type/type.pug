@@ -1,0 +1,13 @@
+-
+    var list = [
+        { left: "H1", right: "This one is the sub-section or widget title" },
+        { left: "H2", right: "Next one is the item title inside widgets" },
+        { left: "H3", right: "This is a label or CTA text" },
+        { left: "Body", right: "This is the body text which is used for most of the design, like paragraphs, lists, etc." },
+    ]
+
+.type
+    each item in list
+        .type__item
+            div(class=["type__text-left", "type_" + item.left.toLowerCase()])= item.left
+            div(class=["type_" + item.left.toLowerCase()])= item.right

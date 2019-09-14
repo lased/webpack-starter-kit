@@ -1,0 +1,11 @@
+@import "~normalize.css/normalize.css";
+@import "../common/fonts";
+
+.container {
+  padding: 145px 150px;
+  max-width: 1440px;
+  margin: auto;
+
+  @import "./logo/logo.scss";
+  @import "./colors-and-type/colors-and-type.scss";
+}

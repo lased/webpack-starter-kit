@@ -1,0 +1,10 @@
+.colors {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  width: 270px;
+
+  @import "./__icon/colors__icon.scss";
+  @import "./__text/colors__text.scss";
+  @import "./__item/colors__item.scss";
+}

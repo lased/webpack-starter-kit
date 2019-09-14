@@ -1,0 +1,36 @@
+@import "src/components/common/variables";
+
+.type {
+  width: 405px;
+
+  &_h1 {
+    font-family: "Quicksand-Bold";
+    font-size: 24px;
+    line-height: 30px;
+    color: $dark-shade-100;
+  }
+
+  &_h2 {
+    font-family: "Quicksand-Bold";
+    font-size: 19px;
+    line-height: 24px;
+    color: $dark-shade-100;
+  }
+
+  &_h3 {
+    font-family: "Montserrat-Regular";
+    font-size: 12px;
+    line-height: 15px;
+    color: $dark-shade-100;
+  }
+
+  &_body {
+    font-family: "Montserrat-Regular";
+    font-size: 14px;
+    line-height: 24px;
+    color: $dark-shade-100;
+  }
+
+  @import "./__text-left/type__text-left.scss";
+  @import "./__item/type__item.scss";
+}

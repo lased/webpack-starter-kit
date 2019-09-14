@@ -1,0 +1,31 @@
+@import "src/components/common/variables";
+
+&_bg {
+  &_green {
+    background-color: $green;
+  }
+
+  &_purple {
+    background-color: $purple;
+  }
+
+  &_dark {
+    background-color: $dark-shade-100;
+  }
+
+  &_dark-75 {
+    background-color: $dark-shade-75;
+  }
+
+  &_dark-50 {
+    background-color: $dark-shade-50;
+  }
+
+  &_dark-25 {
+    background-color: $dark-shade-25;
+  }
+
+  &_dark-5 {
+    background-color: $dark-shade-5;
+  }
+}

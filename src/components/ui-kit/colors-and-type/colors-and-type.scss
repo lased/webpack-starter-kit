@@ -1,0 +1,7 @@
+.colors-and-type {
+  display: flex;
+  justify-content: space-between;
+
+  @import "./colors/colors.scss";
+  @import "./type/type.scss";
+}

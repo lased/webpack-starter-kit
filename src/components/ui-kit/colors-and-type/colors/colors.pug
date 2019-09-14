@@ -1,0 +1,18 @@
+-
+    var colors = [
+        { bg: "dark", bold: "Dark Shade 100%", normal: "#1F2041" },
+        { bg: "dark-75", bold: "Dark Shade 75%", normal: "#1F2041" },
+        { bg: "dark-50", bold: "Dark Shade 50%", normal: "#1F2041" },
+        { bg: "dark-25", bold: "Dark Shade 25%", normal: "#1F2041" },
+        { bg: "dark-5", bold: "Dark Shade 5%", normal: "#1F2041" },
+        { bg: "purple", bold: "Purple", normal: "#BC9CFF" },
+        { bg: "green", bold: "Green", normal: "#6FCF97" }
+    ]
+
+.colors
+    each color in colors
+        .colors__item
+            div(class=["colors__icon", "colors__icon_bg_" + color.bg])
+            .colors__text 
+                strong= color.bold
+                = color.normal
