@@ -50,12 +50,12 @@ const plugins = [
     filename: '[name].[hash].css'
   }),
   new CopyWebpackPlugin([{
-      from: './src/images',
-      to: 'images'
+      from: './src/assets/images',
+      to: 'assets/images'
     },
     {
-      from: './src/fonts',
-      to: 'fonts'
+      from: './src/assets/fonts',
+      to: 'assets/fonts'
     },
     {
       from: './src/*',
@@ -111,7 +111,7 @@ function getFontsRules() {
     test: /\.(woff|woff2|eot|ttf|otf)$/,
     loader: 'file-loader',
     options: {
-      name: 'fonts/[name].[ext]',
+      name: 'assets/fonts/[name].[ext]',
     }
   };
 }
@@ -121,7 +121,7 @@ function getImagesRules() {
     test: /\.(png|svg|jpe?g|gif)$/,
     loader: 'file-loader',
     options: {
-      name: 'images/[name].[ext]'
+      name: 'assets/images/[name].[ext]'
     }
   };
 }
