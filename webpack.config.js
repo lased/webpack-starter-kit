@@ -52,18 +52,21 @@ const plugins = [
   new CopyWebpackPlugin({
     patterns: [{
         from: './src/assets/images',
-        to: 'assets/images'
+        to: 'assets/images',
+        noErrorOnMissing: true
       },
       {
         from: './src/assets/fonts',
-        to: 'assets/fonts'
+        to: 'assets/fonts',
+        noErrorOnMissing: true
       },
       {
         from: './src/*',
         to: '[name].[ext]',
         globOptions: {
           ignore: ['*.pug', '*.ts', '*.s[ac]ss']
-        }
+        },
+        noErrorOnMissing: true
       }
     ]
   }),
