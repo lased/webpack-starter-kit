@@ -49,20 +49,24 @@ const plugins = [
   new MiniCssExtractPlugin({
     filename: '[name].[hash].css'
   }),
-  new CopyWebpackPlugin([{
-      from: './src/assets/images',
-      to: 'assets/images'
-    },
-    {
-      from: './src/assets/fonts',
-      to: 'assets/fonts'
-    },
-    {
-      from: './src/*',
-      to: '[name].[ext]',
-      ignore: ['*.pug', '*.ts', '*.s[ac]ss']
-    }
-  ]),
+  new CopyWebpackPlugin({
+    patterns: [{
+        from: './src/assets/images',
+        to: 'assets/images'
+      },
+      {
+        from: './src/assets/fonts',
+        to: 'assets/fonts'
+      },
+      {
+        from: './src/*',
+        to: '[name].[ext]',
+        globOptions: {
+          ignore: ['*.pug', '*.ts', '*.s[ac]ss']
+        }
+      }
+    ]
+  }),
   ...pages.map(page => {
     const filename = page.replace(pagesDir, '').replace(/\.pug$/, '');
 
@@ -83,7 +87,9 @@ module.exports = (env, argv) => {
 
   if (mode === 'development') {
     devParams.devServer = {
-      contentBase: path.join(__dirname, 'dist'),
+      static: {
+        directory: path.join(__dirname, 'dist')
+      },
       port: 4200
     };
   }
@@ -109,9 +115,9 @@ module.exports = (env, argv) => {
 function getFontsRules() {
   return {
     test: /\.(woff|woff2|eot|ttf|otf)$/,
-    loader: 'file-loader',
-    options: {
-      name: 'assets/fonts/[name].[ext]',
+    type: 'asset',
+    generator: {
+      filename: 'assets/fonts/[name].[ext]',
     }
   };
 }
@@ -119,9 +125,9 @@ function getFontsRules() {
 function getImagesRules() {
   return {
     test: /\.(png|svg|jpe?g|gif)$/,
-    loader: 'file-loader',
-    options: {
-      name: 'assets/images/[name].[ext]'
+    type: 'asset',
+    generator: {
+      filename: 'assets/images/[name].[ext]'
     }
   };
 }
@@ -155,12 +161,14 @@ function getStylesRules() {
       {
         loader: 'postcss-loader',
         options: {
-          plugins: [
-            autoprefixer()
-          ]
+          postcssOptions: {
+            plugins: [
+              autoprefixer()
+            ]
+          }
         }
       },
-      "group-css-media-queries-loader",
+      'group-css-media-queries-loader',
       'sass-loader'
     ],
   };
