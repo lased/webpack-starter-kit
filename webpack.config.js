@@ -7,6 +7,8 @@ const {
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 const pagesDir = './src/pages/';
 const buildDir = 'dist';
@@ -19,9 +21,12 @@ const entries = getEntries(require('glob').sync(`${pagesDir}**/*.ts`));
 function getEntries(filenames) {
   const entries = {};
 
-  filenames.forEach(filename => entries[filename.replace(pagesDir, '').replace(/\.ts$/, '')] = filename);
+  filenames.forEach(
+    (filename) =>
+      (entries[filename.replace(pagesDir, "").replace(/\.ts$/, "")] = filename)
+  );
 
-  return entries
+  return entries;
 }
 
 /********************
@@ -36,50 +41,54 @@ const output = {
  * Resolve
  ********************/
 const resolve = {
-  extensions: ['.js', '.jsx', '.ts', '.tsx']
+  extensions: [".js", ".jsx", ".ts", ".tsx"],
+  plugins: [new TsconfigPathsPlugin()],
 };
 
 /********************
  * Plugins
  ********************/
-const pages = require('glob').sync(`${pagesDir}**/*.pug`);
+const pages = require("glob").sync(`${pagesDir}**/*.pug`);
 const plugins = [
   new webpack.ProgressPlugin(),
   new CleanWebpackPlugin(),
   new MiniCssExtractPlugin({
-    filename: '[name].[hash].css'
+    filename: "[name].[hash].css",
   }),
   new CopyWebpackPlugin({
-    patterns: [{
-        from: './src/assets/images',
-        to: 'assets/images',
-        noErrorOnMissing: true
+    patterns: [
+      {
+        from: "./src/assets/images",
+        to: "assets/images",
+        noErrorOnMissing: true,
       },
       {
-        from: './src/assets/fonts',
-        to: 'assets/fonts',
-        noErrorOnMissing: true
+        from: "./src/assets/fonts",
+        to: "assets/fonts",
+        noErrorOnMissing: true,
       },
       {
-        from: './src/*',
-        to: '[name].[ext]',
+        from: "./src/*",
+        to: "[name][ext]",
         globOptions: {
-          ignore: ['*.pug', '*.ts', '*.s[ac]ss']
+          ignore: ["*.pug", "*.ts", "*.s[ac]ss"],
         },
-        noErrorOnMissing: true
-      }
-    ]
+        noErrorOnMissing: true,
+      },
+    ],
   }),
-  ...pages.map(page => {
-    const filename = page.replace(pagesDir, '').replace(/\.pug$/, '');
+  ...pages.map((page) => {
+    const filename = page.replace(pagesDir, "").replace(/\.pug$/, "");
 
     return new HtmlWebpackPlugin({
       filename: `${filename}.html`,
       template: page,
-      chunks: [filename]
+      chunks: [filename],
+      inject: "body",
     });
-  })
+  }),
 ];
+
 
 /********************
  * Exports
@@ -111,16 +120,38 @@ module.exports = (env, argv) => {
         getTemplatesRules(mode)
       ]
     },
+    ...getOptimization(),
     ...devParams
   };
 }
+
+function getOptimization() {
+  return {
+    optimization: {
+      minimizer: [
+        new ImageMinimizerPlugin({
+          minimizer: {
+            implementation: ImageMinimizerPlugin.imageminMinify,
+            options: {
+              plugins: [
+                ["jpegtran", { progressive: true }],
+                ["optipng", { optimizationLevel: 5 }],
+              ],
+            },
+          },
+        }),
+      ],
+    },
+  };
+}
+
 
 function getFontsRules() {
   return {
     test: /\.(woff|woff2|eot|ttf|otf)$/,
     type: 'asset',
     generator: {
-      filename: 'assets/fonts/[name].[ext]',
+      filename: 'assets/fonts/[name][ext]',
     }
   };
 }
@@ -130,7 +161,7 @@ function getImagesRules() {
     test: /\.(png|svg|jpe?g|gif)$/,
     type: 'asset',
     generator: {
-      filename: 'assets/images/[name].[ext]'
+      filename: 'assets/images/[name][ext]'
     }
   };
 }
